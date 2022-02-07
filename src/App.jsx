@@ -1,13 +1,12 @@
-import { useEffect, useState } from 'react'
 import './App.css'
+import { useEffect } from 'react/cjs/react.production.min'
+import fetchUser from './services/user'
+import { useUser } from './context/UserContext'
 import Layout from './views/Layout/Layout'
 import Home from './views/Home/Home'
-import fetchUser from './services/user'
 
 function App() {
-  // inital value should match the data type of end value
-  const [user, setUser] = useState({})
-
+  const { user, setUser } = useUser({})
   useEffect(() => {
     fetchUser()
       .then((fetchedUser) => {
@@ -16,8 +15,7 @@ function App() {
       .catch((error) => {
         throw new Error(`Error: ${error}`)
       })
-  }, [])
-
+  }, [setUser])
   return (
     <Layout user={user}>
       <Home user={user} />
